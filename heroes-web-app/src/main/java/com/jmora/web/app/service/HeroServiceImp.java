@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
@@ -25,14 +27,14 @@ public class HeroServiceImp implements IHeroService {
 	private HeroRepository heroRepository;
 
 	@Override
-	public Long createNewHero(HeroRequest request) {
+	public Hero createNewHero(HeroRequest request) {
 
 		Hero hero = new Hero();
 		hero.setHeroName(request.getHeroName());
 		hero.setPower(request.getPower());
 		hero.setRealName(request.getRealName());
 
-		return heroRepository.save(hero).getId();
+		return heroRepository.save(hero);
 	}
 
 	@Override
@@ -50,9 +52,16 @@ public class HeroServiceImp implements IHeroService {
 	}
 
 	@Override
-	public Hero updateHero(Long id, HeroRequest heroRequest) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional
+	public Optional<Hero> updateHero(Long id, HeroRequest heroRequest) {
+		return heroRepository.findById(id)
+				.map(oldHero ->{
+					oldHero.setHeroName(heroRequest.getHeroName());
+					oldHero.setPower(heroRequest.getPower());
+					oldHero.setRealName(heroRequest.getRealName());
+					
+					return oldHero;
+				});
 	}
 
 }

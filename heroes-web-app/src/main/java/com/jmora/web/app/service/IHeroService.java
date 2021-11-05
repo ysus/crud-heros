@@ -11,12 +11,12 @@ import com.jmora.web.app.data.payloads.request.HeroRequest;
 @Component
 public interface IHeroService {
 
-	Long createNewHero(HeroRequest request);
+	Hero createNewHero(HeroRequest request);
 
 	List<Hero> getAllHeros();
 
 	Optional<Hero> getHeroById(Long id);
 
-	Hero updateHero(Long id, HeroRequest heroRequest);
+	Optional<Hero> updateHero(Long id, HeroRequest heroRequest);
 
 }

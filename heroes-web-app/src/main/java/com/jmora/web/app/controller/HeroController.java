@@ -5,6 +5,7 @@ package com.jmora.web.app.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,11 +39,11 @@ public class HeroController {
 	@PostMapping
 	public ResponseEntity<Void> createNewHero(@Valid @RequestBody HeroRequest heroRequest ){
 		
-		Long id = heroService.createNewHero(heroRequest);
+		Hero created = heroService.createNewHero(heroRequest);
 		
 		URI location= ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
-				.buildAndExpand(id)
+				.buildAndExpand(created.getId())
 				.toUri();
 		
 		return ResponseEntity.created(location).build();
@@ -60,5 +62,27 @@ public class HeroController {
 					new HeroNotFoundException(String.format("Hero with id: '%s' not found", id))));	
 	}
 	
-
+	@PutMapping("/{id}")
+	public ResponseEntity<Hero> updateHero(
+			@PathVariable("id") Long id,
+			@Valid @RequestBody HeroRequest heroRequest){
+		
+		Optional<Hero> updated = heroService.updateHero(id, heroRequest);
+		
+		return updated
+				.map(value -> ResponseEntity.ok(value))
+				.orElseGet(() ->{
+					
+					Hero created = heroService.createNewHero(heroRequest);
+					URI location= ServletUriComponentsBuilder.fromCurrentRequest()
+							.path("/{id}")
+							.buildAndExpand(id)
+							.toUri();
+					
+					return ResponseEntity.created(location).body(created);
+					
+				});
+	}
+	
+	
 }
