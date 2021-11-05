@@ -116,10 +116,13 @@ public class HeroControllerTest {
 		// Execute the GET request
 		this.mockMvc.perform(get("/api/heros/1"))
 		
-			// Validate the response code
-			.andExpect(status().isNotFound());
-			
-			
+		// Validate the response code
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+		
+		 // Validate the returned fields
+		.andExpect(jsonPath("$.id",is(1)))
+		.andExpect(jsonPath("$.heroName",is("iron man")));
 	}
 	
 	
@@ -133,13 +136,10 @@ public class HeroControllerTest {
 		// Execute the GET request
 		this.mockMvc.perform(get("/api/heros/100"))
 		
-			// Validate the response code
-			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			
-			 // Validate the returned fields
-			.andExpect(jsonPath("$.id",is(1)))
-			.andExpect(jsonPath("$.heroName",is("iron man")));
+		// Validate the response code
+		.andExpect(status().isNotFound());
+		
+
 			
 	}
 	

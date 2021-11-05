@@ -3,6 +3,7 @@
  */
 package com.jmora.web.app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,11 @@ public class HeroServiceImp implements IHeroService {
 
 	@Override
 	public List<Hero> getAllHeros() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<Hero> list = new ArrayList<>();
+		Iterable<Hero> items = heroRepository.findAll();
+		items.forEach(list::add);
+		return list;
 	}
 
 	@Override

@@ -3,7 +3,7 @@
  */
 package com.jmora.web.app.data.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import com.jmora.web.app.data.models.Hero;
 
@@ -12,6 +12,6 @@ import com.jmora.web.app.data.models.Hero;
  * @author jmp
  *
  */
-public interface HeroRepository extends JpaRepository<Hero, Long> {
+public interface HeroRepository extends CrudRepository<Hero, Long> {
 
 }

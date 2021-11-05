@@ -26,7 +26,6 @@ public class HeroRequest {
 	
 	@NotBlank
     @NotNull
-    @NotEmpty
 	private String realName;
 
 }
