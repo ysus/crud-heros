@@ -49,4 +49,10 @@ public class HeroServiceImp implements IHeroService {
 		return heroRepository.findById(id);
 	}
 
+	@Override
+	public Hero updateHero(Long id, HeroRequest heroRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

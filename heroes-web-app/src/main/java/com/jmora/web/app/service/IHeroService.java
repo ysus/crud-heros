@@ -17,4 +17,6 @@ public interface IHeroService {
 
 	Optional<Hero> getHeroById(Long id);
 
+	Hero updateHero(Long id, HeroRequest heroRequest);
+
 }

@@ -57,21 +57,7 @@ public class HeroController {
 		
 		return ResponseEntity
 				.ok(heroService.getHeroById(id).orElseThrow(() -> 
-					new HeroNotFoundException(String.format("Hero with id: '%s' not found", id))));
-		
-//		return heroService.getHeroById(id)
-//				.map(hero ->{
-//					try {
-//						return ResponseEntity
-//								.ok()
-//								.eTag(Long.toString(hero.getId()))
-//								.location(new URI("/api/heros/" + hero.getId()))
-//								.body(hero);
-//					} catch (URISyntaxException e) {
-//                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//					}
-//				}).orElseThrow(() -> new HeroNotFoundException(""));
-		
+					new HeroNotFoundException(String.format("Hero with id: '%s' not found", id))));	
 	}
 	
 

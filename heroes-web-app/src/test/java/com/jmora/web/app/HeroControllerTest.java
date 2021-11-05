@@ -6,9 +6,13 @@ package com.jmora.web.app;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.eq;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -140,6 +144,38 @@ public class HeroControllerTest {
 		// Validate the response code
 		.andExpect(status().isNotFound());
 			
+	}
+	
+	@Test
+	@DisplayName("PUT /api/heros/1")
+	void testUpdateHero() throws Exception {
+		
+		HeroRequest request = new HeroRequest();
+		request.setHeroName("Hulk");
+		request.setPower("super fuerza");
+		request.setRealName("Robert Bruce Banner");
+		
+		when(heroService
+				.updateHero(eq(1L),argumentCaptor.capture()))
+				.thenReturn(createHero(1L,"iron man", "armadura", "tony stark"));
+		
+		
+		this.mockMvc.perform(put("/api/heros/1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(asJsonString(request)))
+		
+				// Validate the response code
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			
+				// Validate the returned fields
+				.andExpect(jsonPath("$.id",is(1)))
+				.andExpect(jsonPath("$.heroName",is("hulk")));
+		
+		 // Validate the returned fields
+		assertThat(argumentCaptor.getValue().getHeroName(),is("Hulk"));
+		assertThat(argumentCaptor.getValue().getPower(),is("super fuerza"));
+		assertThat(argumentCaptor.getValue().getRealName(),is("Robert Bruce Banner"));
 	}
 	
 	/**
