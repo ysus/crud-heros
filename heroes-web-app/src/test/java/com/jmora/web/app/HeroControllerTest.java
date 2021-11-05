@@ -5,11 +5,18 @@ package com.jmora.web.app;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -21,8 +28,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
 import com.jmora.web.app.service.IHeroService;
+
 
 /**
  * @author Administrador
@@ -42,7 +51,8 @@ public class HeroControllerTest {
 	private ArgumentCaptor<HeroRequest> argumentCaptor;
 
 	@Test
-	public void postingANewHeroShouldCreateANewHeroInDatabase() throws Exception{
+	@DisplayName("POST /api/heros")
+	public void testCreateHero() throws Exception{
 		
 		HeroRequest request = new HeroRequest();
 		request.setHeroName("Hulk");
@@ -71,7 +81,43 @@ public class HeroControllerTest {
 		
 	}
 	
+	@Test
+	@DisplayName("GET /api/heros")
+	void testGetHerosSuccess() throws Exception {
+		when(heroService.getAllHeros()).thenReturn(
+				List.of(createHero("iron man", "armadura", "tony stark"),createHero("capitan america", "super poder", "steve")));
+		
+		this.mockMvc
+			.perform(get("/api/heros"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			.andExpect(jsonPath("$", hasSize(2)))
+			.andExpect(jsonPath("$[0].id",is(1)))
+			.andExpect(jsonPath("$[0].heroName",is("iron man")));
+		
+		
+	}
 	
+	
+	/**
+	 * @param heroName
+	 * @param power
+	 * @param realName
+	 * @return
+	 */
+	private Hero createHero(String heroName,String power, String realName) {
+		Hero hero = new Hero();
+		hero.setHeroName(heroName);
+		hero.setPower(power);
+		hero.setRealName(realName);
+		
+		return hero;	
+	}
+	
+    /**
+     * @param obj
+     * @return
+     */
     static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);

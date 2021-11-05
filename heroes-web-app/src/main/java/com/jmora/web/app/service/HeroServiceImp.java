@@ -3,6 +3,8 @@
  */
 package com.jmora.web.app.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,12 @@ public class HeroServiceImp implements IHeroService {
 		hero.setRealName(request.getRealName());
 
 		return heroRepository.save(hero).getId();
+	}
+
+	@Override
+	public List<Hero> getAllHeros() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
