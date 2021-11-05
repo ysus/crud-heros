@@ -94,8 +94,23 @@ public class HeroControllerTest {
 			.andExpect(jsonPath("$", hasSize(2)))
 			.andExpect(jsonPath("$[0].id",is(1)))
 			.andExpect(jsonPath("$[0].heroName",is("iron man")));
+			
+	}
+	
+	
+	@Test
+	@DisplayName("GET /api/heros/1")
+	void testGetHeroById() throws Exception {
+		when(heroService.getHeroById(1L)).thenReturn(createHero("iron man", "armadura", "tony stark"));
 		
+		this.mockMvc.perform(get("/api/heros/1"))
 		
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			
+			.andExpect(jsonPath("$.id",is(1)))
+			.andExpect(jsonPath("$.heroName",is("iron man")));
+			
 	}
 	
 	

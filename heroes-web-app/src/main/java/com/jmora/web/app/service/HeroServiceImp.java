@@ -39,4 +39,10 @@ public class HeroServiceImp implements IHeroService {
 		return null;
 	}
 
+	@Override
+	public Hero getHeroById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

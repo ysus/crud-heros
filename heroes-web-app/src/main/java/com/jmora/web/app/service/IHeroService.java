@@ -14,4 +14,6 @@ public interface IHeroService {
 
 	List<Hero> getAllHeros();
 
+	Hero getHeroById(Long id);
+
 }
