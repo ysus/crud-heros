@@ -1,6 +1,7 @@
 package com.jmora.web.app.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,6 @@ public interface IHeroService {
 
 	List<Hero> getAllHeros();
 
-	Hero getHeroById(Long id);
+	Optional<Hero> getHeroById(Long id);
 
 }

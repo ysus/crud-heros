@@ -5,6 +5,7 @@ package com.jmora.web.app.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,9 +45,8 @@ public class HeroServiceImp implements IHeroService {
 	}
 
 	@Override
-	public Hero getHeroById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<Hero> getHeroById(Long id) {
+		return heroRepository.findById(id);
 	}
 
 }

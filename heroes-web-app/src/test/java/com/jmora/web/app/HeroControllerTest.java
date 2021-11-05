@@ -11,10 +11,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,7 +90,7 @@ public class HeroControllerTest {
 		
 		// Setup our mocked service
 		when(heroService.getAllHeros()).thenReturn(
-				List.of(createHero("iron man", "armadura", "tony stark"),createHero("capitan america", "super poder", "steve")));
+				List.of(createHero(1L,"iron man", "armadura", "tony stark"),createHero(2L,"capitan america", "super poder", "steve")));
 		
 		// Execute the GET request
 		this.mockMvc.perform(get("/api/heros"))
@@ -111,7 +112,7 @@ public class HeroControllerTest {
 	void testGetHeroById() throws Exception {
 		
 		// Setup our mocked service
-		when(heroService.getHeroById(1L)).thenReturn(createHero("iron man", "armadura", "tony stark"));
+		when(heroService.getHeroById(1L)).thenReturn(Optional.of(createHero(1L,"iron man", "armadura", "tony stark")));
 		
 		// Execute the GET request
 		this.mockMvc.perform(get("/api/heros/1"))
@@ -138,11 +139,8 @@ public class HeroControllerTest {
 		
 		// Validate the response code
 		.andExpect(status().isNotFound());
-		
-
 			
 	}
-	
 	
 	/**
 	 * @param heroName
@@ -150,8 +148,9 @@ public class HeroControllerTest {
 	 * @param realName
 	 * @return
 	 */
-	private Hero createHero(String heroName,String power, String realName) {
+	private Hero createHero(Long id,String heroName,String power, String realName) {
 		Hero hero = new Hero();
+		hero.setId(id);
 		hero.setHeroName(heroName);
 		hero.setPower(power);
 		hero.setRealName(realName);

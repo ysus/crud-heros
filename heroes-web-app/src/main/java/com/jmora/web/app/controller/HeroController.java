@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
+import com.jmora.web.app.exception.HeroNotFoundException;
 import com.jmora.web.app.service.IHeroService;
 
 /**
@@ -50,7 +52,27 @@ public class HeroController {
 		return ResponseEntity.ok(heroService.getAllHeros());
 	}
 	
-	
+	@GetMapping("/{id}")
+	public ResponseEntity<Hero> getHeroById(@PathVariable("id") Long id){
+		
+		return ResponseEntity
+				.ok(heroService.getHeroById(id).orElseThrow(() -> 
+					new HeroNotFoundException(String.format("Hero with id: '%s' not found", id))));
+		
+//		return heroService.getHeroById(id)
+//				.map(hero ->{
+//					try {
+//						return ResponseEntity
+//								.ok()
+//								.eTag(Long.toString(hero.getId()))
+//								.location(new URI("/api/heros/" + hero.getId()))
+//								.body(hero);
+//					} catch (URISyntaxException e) {
+//                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//					}
+//				}).orElseThrow(() -> new HeroNotFoundException(""));
+		
+	}
 	
 
 }
