@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
+import com.jmora.web.app.exception.HeroNotFoundException;
 import com.jmora.web.app.service.IHeroService;
 
 
@@ -59,6 +60,7 @@ public class HeroControllerTest {
 		request.setPower("super fuerza");
 		request.setRealName("Robert Bruce Banner");
 		
+		// Setup our mocked service
 		when(heroService.createNewHero(argumentCaptor.capture())).thenReturn(1L);
 		
 		
@@ -84,13 +86,19 @@ public class HeroControllerTest {
 	@Test
 	@DisplayName("GET /api/heros")
 	void testGetHerosSuccess() throws Exception {
+		
+		// Setup our mocked service
 		when(heroService.getAllHeros()).thenReturn(
 				List.of(createHero("iron man", "armadura", "tony stark"),createHero("capitan america", "super poder", "steve")));
 		
-		this.mockMvc
-			.perform(get("/api/heros"))
+		// Execute the GET request
+		this.mockMvc.perform(get("/api/heros"))
+			
+			// Validate the response code
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			
+			 // Validate the returned fields
 			.andExpect(jsonPath("$", hasSize(2)))
 			.andExpect(jsonPath("$[0].id",is(1)))
 			.andExpect(jsonPath("$[0].heroName",is("iron man")));
@@ -101,13 +109,35 @@ public class HeroControllerTest {
 	@Test
 	@DisplayName("GET /api/heros/1")
 	void testGetHeroById() throws Exception {
+		
+		// Setup our mocked service
 		when(heroService.getHeroById(1L)).thenReturn(createHero("iron man", "armadura", "tony stark"));
 		
+		// Execute the GET request
 		this.mockMvc.perform(get("/api/heros/1"))
 		
+			// Validate the response code
+			.andExpect(status().isNotFound());
+			
+			
+	}
+	
+	
+	@Test
+	@DisplayName("GET /api/heros/100  - Not Found")
+	void testGetHeroByIdNotFound() throws Exception {
+		
+		// Setup our mocked service
+		when(heroService.getHeroById(1L)).thenThrow(new HeroNotFoundException("Hero by id '100' not found"));
+		
+		// Execute the GET request
+		this.mockMvc.perform(get("/api/heros/100"))
+		
+			// Validate the response code
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 			
+			 // Validate the returned fields
 			.andExpect(jsonPath("$.id",is(1)))
 			.andExpect(jsonPath("$.heroName",is("iron man")));
 			
