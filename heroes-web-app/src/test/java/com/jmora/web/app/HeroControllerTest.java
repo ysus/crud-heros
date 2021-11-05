@@ -157,9 +157,9 @@ public class HeroControllerTest {
 		
 		when(heroService
 				.updateHero(eq(1L),argumentCaptor.capture()))
-				.thenReturn(createHero(1L,"iron man", "armadura", "tony stark"));
+				.thenReturn(createHero(1L,"Hulk", "super fuerza", "Robert Bruce Banner"));
 		
-		
+		// Execute the GET request
 		this.mockMvc.perform(put("/api/heros/1")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(asJsonString(request)))
@@ -176,6 +176,31 @@ public class HeroControllerTest {
 		assertThat(argumentCaptor.getValue().getHeroName(),is("Hulk"));
 		assertThat(argumentCaptor.getValue().getPower(),is("super fuerza"));
 		assertThat(argumentCaptor.getValue().getRealName(),is("Robert Bruce Banner"));
+	}
+	
+	
+	@Test
+	@DisplayName("PUT /api/heros/100 -  Not Found")
+	void testUpdateHeroNotFound() throws Exception {
+		
+		HeroRequest request = new HeroRequest();
+		request.setHeroName("Hulk");
+		request.setPower("super fuerza");
+		request.setRealName("Robert Bruce Banner");
+		
+		// Setup our mocked service
+		when(heroService
+				.updateHero(eq(100L),argumentCaptor.capture()))
+				.thenThrow(new HeroNotFoundException("Hero by id '100' not found"));
+		
+		// Execute the PUT request
+		this.mockMvc.perform(put("/api/heros/1")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(asJsonString(request)))
+		
+				// Validate the response code
+				.andExpect(status().isNotFound());
+
 	}
 	
 	/**
