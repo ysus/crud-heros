@@ -15,18 +15,18 @@ import lombok.Data;
  */
 @Data
 public class HeroRequest {
-	
-	@NotBlank
-	 @NotNull(message = "heroName is required")
+
+	@NotBlank(message = "heroName mustn't be empty")
+	@NotNull(message = "heroName is required")
 	private String heroName;
-	
-	@NotBlank
-	 @NotNull(message = "power is required")
+
+	@NotBlank(message = "heroName mustn't be empty")
+	@NotNull(message = "power is required")
 	private String power;
-	
-	@NotBlank
+
+	@NotBlank(message = "heroName mustn't be empty")
 	@NotNull(message = "realName is required")
-	@Pattern(regexp="^[a-zA-Z ]+$", message = "realName must be a string")
+	@Pattern(regexp = "^[a-zA-Z ]+$", message = "realName must be a string")
 	private String realName;
 
 }
