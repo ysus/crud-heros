@@ -64,4 +64,10 @@ public class HeroServiceImp implements IHeroService {
 				});
 	}
 
+	@Override
+	public void deleteHeroById(Long id) {
+		heroRepository.deleteById(id);
+		
+	}
+
 }

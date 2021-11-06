@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,6 +83,12 @@ public class HeroController {
 					return ResponseEntity.created(location).body(created);
 					
 				});
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteHero(@PathVariable("id") Long id){
+		heroService.deleteHeroById(id);
+		return ResponseEntity.noContent().build();
 	}
 	
 	
