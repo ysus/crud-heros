@@ -31,7 +31,7 @@ public class UserRestController {
 	@PostMapping("/saveUser")
 	public ResponseEntity<String> saveUser(@RequestBody ApplicationUser user) {
 
-		Integer id = userService.saveUser(user);
+		Long id = userService.saveUser(user);
 		String message = "User with id '" + id + "' saved succssfully!";
 		return ResponseEntity.ok(message);
 	}

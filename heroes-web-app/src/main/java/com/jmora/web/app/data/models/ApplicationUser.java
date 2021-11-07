@@ -6,24 +6,28 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
-import lombok.Data;
+import org.springframework.data.jpa.domain.AbstractPersistable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+
+	
 @Data
 @Entity
+@EntityListeners(AuditingEntityListener.class)
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Table(name="users")
-public class ApplicationUser {
+public class ApplicationUser extends AbstractPersistable<Long> {
 
-	@Id
-	@GeneratedValue
-	@Column(name="user_id")
-	private Integer id;
-	
 	@Column(name="user_name")
 	private String username;
 	

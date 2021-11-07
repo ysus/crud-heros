@@ -6,7 +6,7 @@ import com.jmora.web.app.data.models.ApplicationUser;
 
 public interface IUserService {
 
-	Integer saveUser(ApplicationUser user);
+	Long saveUser(ApplicationUser user);
 	
 	Optional<ApplicationUser> findByUsername(String username);
 }

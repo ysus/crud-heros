@@ -27,7 +27,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 	private BCryptPasswordEncoder bCryptEncoder;
 	
 	@Override
-	public Integer saveUser(ApplicationUser user) {
+	public Long saveUser(ApplicationUser user) {
 		
 		//Encode password before saving to DB
 		user.setPassword(bCryptEncoder.encode(user.getPassword()));

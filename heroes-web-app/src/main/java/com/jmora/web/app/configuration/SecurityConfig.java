@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http
 			.csrf().disable()    //Disabling CSRF as not using form based login
 			.authorizeRequests()
-			.antMatchers("/user/saveUser","/user/loginUser").permitAll()
+			.antMatchers("/user/saveUser","/user/loginUser","/api/heros","/h2-console/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.exceptionHandling()
@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			//To Verify user from second request onwards............
 			.and()
 			.addFilterBefore(secFilter, UsernamePasswordAuthenticationFilter.class)
+			.headers().frameOptions().sameOrigin();
 			;
 	}
 }
