@@ -8,6 +8,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -28,6 +29,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,7 +74,11 @@ public class HeroControllerTest {
 		// Execute the POST request
 		this.mockMvc.perform(post("/api/heros")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(asJsonString(request)))
+				.content(asJsonString(request))
+				.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
+				 .with(csrf())
+				)
+				
 		
 		 		// Validate the response code
 				.andExpect(status().isCreated())
@@ -97,7 +103,10 @@ public class HeroControllerTest {
 				List.of(createHero(1L,"iron man", "armadura", "tony stark"),createHero(2L,"capitan america", "super poder", "steve")));
 		
 		// Execute the GET request
-		this.mockMvc.perform(get("/api/heros"))
+		this.mockMvc
+			.perform(get("/api/heros")
+			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
+			.with(csrf()))
 			
 			// Validate the response code
 			.andExpect(status().isOk())
@@ -119,16 +128,19 @@ public class HeroControllerTest {
 		when(heroService.getHeroById(1L)).thenReturn(Optional.of(createHero(1L,"iron man", "armadura", "tony stark")));
 		
 		// Execute the GET request
-		this.mockMvc.perform(get("/api/heros/1"))
-		
-		// Validate the response code
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-		
-		 // Validate the returned fields
-		.andExpect(jsonPath("$.id",is(1)))
-		.andExpect(jsonPath("$.heroName",is("iron man")));
-	}
+		this.mockMvc
+			.perform(get("/api/heros/1")
+			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
+			.with(csrf()))
+
+			// Validate the response code
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+			
+			 // Validate the returned fields
+			.andExpect(jsonPath("$.id",is(1)))
+			.andExpect(jsonPath("$.heroName",is("iron man")));
+		}
 	
 	
 	@Test
@@ -139,10 +151,14 @@ public class HeroControllerTest {
 		when(heroService.getHeroById(1L)).thenThrow(new HeroNotFoundException("Hero by id '100' not found"));
 		
 		// Execute the GET request
-		this.mockMvc.perform(get("/api/heros/100"))
+		this.mockMvc
+			.perform(get("/api/heros/100")
+			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
+			 .with(csrf())
+			)
 		
 		// Validate the response code
-		.andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 			
 	}
 	
@@ -160,17 +176,21 @@ public class HeroControllerTest {
 				.thenReturn(Optional.of(createHero(1L,"Hulk", "super fuerza", "Robert Bruce Banner")));
 		
 		// Execute the GET request
-		this.mockMvc.perform(put("/api/heros/1")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(asJsonString(request)))
+		this.mockMvc
+			.perform(put("/api/heros/1")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(asJsonString(request))
+			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
+			.with(csrf())
+			)
+	
+			// Validate the response code
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 		
-				// Validate the response code
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-			
-				// Validate the returned fields
-				.andExpect(jsonPath("$.id",is(1)))
-				.andExpect(jsonPath("$.heroName",is("Hulk")));
+			// Validate the returned fields
+			.andExpect(jsonPath("$.id",is(1)))
+			.andExpect(jsonPath("$.heroName",is("Hulk")));
 		
 		 // Validate the returned fields
 		assertThat(argumentCaptor.getValue().getHeroName(),is("Hulk"));
@@ -194,12 +214,16 @@ public class HeroControllerTest {
 				.thenThrow(new HeroNotFoundException("Hero by id '100' not found"));
 		
 		// Execute the PUT request
-		this.mockMvc.perform(put("/api/heros/1")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(asJsonString(request)))
+		this.mockMvc
+			.perform(put("/api/heros/1")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(asJsonString(request))
+			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
+			.with(csrf())
+			)
 		
-				// Validate the response code
-				.andExpect(status().isNotFound());
+			// Validate the response code
+			.andExpect(status().isCreated());
 	}
 	
 	/**
