@@ -33,8 +33,8 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
+import com.jmora.web.app.data.payloads.response.HeroResponse;
 import com.jmora.web.app.exception.HeroNotFoundException;
 import com.jmora.web.app.service.IHeroService;
 
@@ -232,8 +232,8 @@ public class HeroControllerTest {
 	 * @param realName
 	 * @return
 	 */
-	private Hero createHero(Long id,String heroName,String power, String realName) {
-		Hero hero = new Hero();
+	private HeroResponse createHero(Long id,String heroName,String power, String realName) {
+		HeroResponse hero = new HeroResponse();
 		hero.setId(id);
 		hero.setHeroName(heroName);
 		hero.setPower(power);
