@@ -24,6 +24,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
 import com.jmora.web.app.data.payloads.response.HeroResponse;
 import com.jmora.web.app.exception.HeroNotFoundException;
+import com.jmora.web.app.logging.LogExecutionTime;
 import com.jmora.web.app.service.IHeroService;
 
 /**
@@ -38,6 +39,7 @@ public class HeroController {
 	private IHeroService heroService;
 	
 	@PostMapping
+	@LogExecutionTime
 	public ResponseEntity<Void> createNewHero(@Valid @RequestBody HeroRequest heroRequest ){
 		
 		HeroResponse created = heroService.createNewHero(heroRequest);
@@ -51,11 +53,13 @@ public class HeroController {
 	}
 	
 	@GetMapping
+	@LogExecutionTime
 	public ResponseEntity<List<HeroResponse>> getAllHeros(){
 		return ResponseEntity.ok(heroService.getAllHeros());
 	}
 	
 	@GetMapping("/{id}")
+	@LogExecutionTime
 	public ResponseEntity<HeroResponse> getHeroById(@PathVariable("id") Long id){
 		
 		return ResponseEntity
