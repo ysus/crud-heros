@@ -7,17 +7,18 @@ import org.springframework.stereotype.Component;
 
 import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
+import com.jmora.web.app.data.payloads.response.HeroResponse;
 
 @Component
 public interface IHeroService {
 
-	Hero createNewHero(HeroRequest request);
+	HeroResponse createNewHero(HeroRequest request);
 
-	List<Hero> getAllHeros();
+	List<HeroResponse> getAllHeros();
 
-	Optional<Hero> getHeroById(Long id);
+	Optional<HeroResponse> getHeroById(Long id);
 
-	Optional<Hero> updateHero(Long id, HeroRequest heroRequest);
+	Optional<HeroResponse> updateHero(Long id, HeroRequest heroRequest);
 
 	void deleteHeroById(Long id);
 

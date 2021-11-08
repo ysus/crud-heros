@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
+import com.jmora.web.app.data.payloads.response.HeroResponse;
 import com.jmora.web.app.exception.HeroNotFoundException;
 import com.jmora.web.app.service.IHeroService;
 
@@ -40,7 +40,7 @@ public class HeroController {
 	@PostMapping
 	public ResponseEntity<Void> createNewHero(@Valid @RequestBody HeroRequest heroRequest ){
 		
-		Hero created = heroService.createNewHero(heroRequest);
+		HeroResponse created = heroService.createNewHero(heroRequest);
 		
 		URI location= ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
@@ -51,12 +51,12 @@ public class HeroController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<Hero>> getAllHeros(){
+	public ResponseEntity<List<HeroResponse>> getAllHeros(){
 		return ResponseEntity.ok(heroService.getAllHeros());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Hero> getHeroById(@PathVariable("id") Long id){
+	public ResponseEntity<HeroResponse> getHeroById(@PathVariable("id") Long id){
 		
 		return ResponseEntity
 				.ok(heroService.getHeroById(id).orElseThrow(() -> 
@@ -64,17 +64,17 @@ public class HeroController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Hero> updateHero(
+	public ResponseEntity<HeroResponse> updateHero(
 			@PathVariable("id") Long id,
 			@Valid @RequestBody HeroRequest heroRequest){
 		
-		Optional<Hero> updated = heroService.updateHero(id, heroRequest);
+		Optional<HeroResponse> updated = heroService.updateHero(id, heroRequest);
 		
 		return updated
 				.map(value -> ResponseEntity.ok(value))
 				.orElseGet(() ->{
 					
-					Hero created = heroService.createNewHero(heroRequest);
+					HeroResponse created = heroService.createNewHero(heroRequest);
 					URI location= ServletUriComponentsBuilder.fromCurrentRequest()
 							.path("/{id}")
 							.buildAndExpand(id)
