@@ -10,32 +10,32 @@
 			<column name="id" type="INT">
 				<constraints primaryKey="true" />
 			</column>
-			<column name="user_name" type="VARCHAR(255)">
+			<column name="username" type="VARCHAR(255)">
 				<constraints nullable="false" />
 			</column>
 
-			<column name="user_passwd" type="VARCHAR(255)">
+			<column name="password" type="VARCHAR(255)">
 				<constraints nullable="false" />
 			</column>
 
-			<column name="user_email" type="VARCHAR(255)">
+			<column name="email" type="VARCHAR(255)">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
-		<createTable tableName="roles">
+		<createTable tableName="application_user_roles">
 			<column name="id" type="INT">
 				<constraints primaryKey="true" />
 			</column>
-			<column name="user_id" type="INT">
+			<column name="application_user_id" type="INT">
 				<constraints nullable="false" />
 			</column>
-			<column name="user_role" type="VARCHAR(255)">
+			<column name="roles" type="VARCHAR(255)">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
 		<addAutoIncrement tableName="users" columnName="id" columnDataType="INT" startWith="1" incrementBy="1" />
-		<addAutoIncrement tableName="roles" columnName="id" columnDataType="INT" startWith="1" incrementBy="1" />
-		<createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />
+		<addAutoIncrement tableName="application_user_roles" columnName="id" columnDataType="INT" startWith="1" incrementBy="1" />
+<!-- 		<createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" /> -->
 		
 		<rollback>
 			<dropTable tableName="users" />

@@ -1,12 +1,8 @@
 package com.jmora.web.app.service;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,17 +45,12 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 		if(opt.isEmpty()) {
 			throw new UsernameNotFoundException("User with username: " +username +" not found");
 		}else {
-			ApplicationUser user =opt.get();	//retrieving user from DB
-			Set<String> roles = user.getRoles();
-			Set<GrantedAuthority> ga = new HashSet<>();
-			for(String role:roles) {
-				ga.add(new SimpleGrantedAuthority(role));
-			}
-			
+			ApplicationUser user =opt.get();
+
 			springUser = new User(
 							username,
 							user.getPassword(),
-							ga );
+							user.getAuthorities());
 		}
 		
 		return springUser;

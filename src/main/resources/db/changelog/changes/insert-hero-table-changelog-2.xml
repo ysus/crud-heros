@@ -11,10 +11,11 @@
             <column name="hero_name" value="Hulk"/>
             <column name="power" value="fuerza"/>
             <column name="real_name" value="Robert Bruce Banner"/>
+            <column name="version" value="1"/>
             
-            <column name="CREATED_BY_ID" value="1"/>
+            <column name="CREATED_BY" value="jesus"/>
             <column name="CREATED_DATE" value="now()"/>
-            <column name="LAST_MODIFIED_BY_ID" value="1"/>
+            <column name="LAST_MODIFIED_BY" value="jesus"/>
             <column name="LAST_MODIFIED_DATE" value="now()"/>
             
         </insert>

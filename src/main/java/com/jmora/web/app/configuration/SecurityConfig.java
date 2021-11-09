@@ -10,20 +10,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.jmora.web.app.data.repository.UserRepository;
 import com.jmora.web.app.filter.SecurityFilter;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    
-	@Autowired
-	private UserDetailsService userDetailsService;
-	
-	@Autowired
-	private BCryptPasswordEncoder bCryptEncoder;
 	
 	@Autowired
 	private UnAuthorizedUserAuthenticationEntryPoint authenticationEntryPoint;
@@ -31,17 +27,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private SecurityFilter secFilter;
 	
+	
+	@Autowired
+    private CustomAuthenticationProvider authProvider;
+	
 	//Required in case of Stateless Authentication
 	@Override @Bean
-	protected AuthenticationManager authenticationManager() throws Exception {
+	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManager();
 	}
 	
+//	 @Bean
+//	    UserDetailsService customUserDetailsService(UserRepository users) {
+//	        return (username) -> users.findByUsername(username)
+//	                .orElseThrow(() -> new UsernameNotFoundException("Username: " + username + " not found"));
+//	    }
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-		auth.userDetailsService(userDetailsService)
-		    .passwordEncoder(bCryptEncoder);
+		auth.authenticationProvider(authProvider);
 	}
 	
 	@Override
@@ -64,4 +68,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.headers().frameOptions().sameOrigin();
 			;
 	}
+
 }

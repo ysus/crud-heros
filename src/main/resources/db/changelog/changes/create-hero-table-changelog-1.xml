@@ -16,8 +16,10 @@
 			<column name="power" type="VARCHAR(255)" />
 			<column name="real_name" type="VARCHAR(255)" />
 			
+			<column name="version" type="INT" />
+			
 
-			<column name="CREATED_BY_ID" type="INT"
+			<column name="CREATED_BY" type="VARCHAR(255)"
 				 remarks="User that created this row">
 				<constraints nullable="false" />
 			</column>
@@ -25,7 +27,7 @@
 				remarks="Row creation timestamp">
 				<constraints nullable="false" />
 			</column>
-			<column name="LAST_MODIFIED_BY_ID" type="INT"
+			<column name="LAST_MODIFIED_BY" type="VARCHAR(255)"
 				remarks="User that last modified this row">
 				<constraints nullable="false" />
 			</column>
@@ -34,6 +36,8 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+		<createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />
+		
 		<rollback>
 			<dropTable tableName="hero" />
 		</rollback>

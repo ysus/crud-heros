@@ -1,17 +1,14 @@
 package com.jmora.web.app.data.models;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
-import org.springframework.data.jpa.domain.AbstractAuditable;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 /**
  * @author jmp
@@ -19,14 +16,13 @@ import lombok.ToString;
  */
 @Data
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class Hero extends AbstractAuditable<ApplicationUser, Long> {
-	@Id
-	@GeneratedValue
-	private Long id;
-	
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class Hero extends AbstractAuditableEntity<Long> implements Serializable {
+
+	private static final long serialVersionUID = 3504071429122820038L;
+
 	@Column(name="hero_name")
 	private String heroName;
 	

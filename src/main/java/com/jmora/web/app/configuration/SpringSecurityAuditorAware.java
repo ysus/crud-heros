@@ -10,24 +10,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.jmora.web.app.data.models.ApplicationUser;
-import com.jmora.web.app.data.repository.UserRepository;
+import com.jmora.web.app.data.models.Username;
 
 
 @Configuration
 @EnableJpaAuditing
 public class SpringSecurityAuditorAware {
   @Bean
-  AuditorAware<ApplicationUser> auditorAware(UserRepository repo) {
+  AuditorAware<Username> auditorAware() {
     // Lookup ApplicationUser instance corresponding to logged in user
     return () -> Optional.ofNullable(SecurityContextHolder.getContext())
       .map(SecurityContext::getAuthentication)
       .filter(Authentication::isAuthenticated)
-      .map(Authentication::getName)
-      .map(name ->{
-    	  System.out.println("####"+name);
-    	  return name;
-      })
-      .flatMap(repo::findByUsername);
+      .map(Authentication::getPrincipal)
+     // .map(UserDetails.class::cast)
+      .map(u -> new Username(u.toString()));
   }
 }
