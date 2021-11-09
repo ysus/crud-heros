@@ -30,10 +30,17 @@ public class UserRestController {
 
 	@PostMapping("/saveUser")
 	public ResponseEntity<String> saveUser(@RequestBody ApplicationUser user) {
+		
+		return userService.findByUsername(user.getUsername())
+				.map((u) ->{
+					return ResponseEntity.badRequest().body(String.format("username: '%s' already exist", u.getUsername()));
+				})
+				.orElseGet(() ->{
+					Long id = userService.saveUser(user);
+					String message = "User with id '" + id + "' saved succssfully!";
+					return ResponseEntity.ok(message);
+				});
 
-		Long id = userService.saveUser(user);
-		String message = "User with id '" + id + "' saved succssfully!";
-		return ResponseEntity.ok(message);
 	}
 
 	@PostMapping("/loginUser")
@@ -42,6 +49,7 @@ public class UserRestController {
 		// Validate username/password with DB(required in case of Stateless Authentication)
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+		
 		String token = util.generateToken(request.getUsername());
 		return ResponseEntity.ok(new ApplicationUserResponse(token, "Token generated successfully!"));
 	}
