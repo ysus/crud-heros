@@ -39,8 +39,7 @@ public class UserRestController {
 	@PostMapping("/loginUser")
 	public ResponseEntity<ApplicationUserResponse> login(@RequestBody ApplicationUserRequest request) {
 
-		// Validate username/password with DB(required in case of Stateless
-		// Authentication)
+		// Validate username/password with DB(required in case of Stateless Authentication)
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		String token = util.generateToken(request.getUsername());

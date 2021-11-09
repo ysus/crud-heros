@@ -32,12 +32,7 @@ public class HeroServiceImp implements IHeroService {
  
 	@Override
 	public HeroResponse createNewHero(HeroRequest request) {
-
-		Hero hero = new Hero();
-		hero.setHeroName(request.getHeroName());
-		hero.setPower(request.getPower());
-		hero.setRealName(request.getRealName());
-
+		Hero hero = entityConversion.HeroRequestToHero(request);
 		return entityConversion.HeroToHeroResponse(heroRepository.save(hero));
 	}
 
@@ -55,32 +50,33 @@ public class HeroServiceImp implements IHeroService {
 
 	@Override
 	public Optional<HeroResponse> getHeroById(Long id) {
-		
-		Optional<Hero> hero = heroRepository.findById(id);
-		return hero.map(h -> entityConversion.HeroToHeroResponse(h));
+		return heroRepository.findById(id)
+				.map(h -> entityConversion.HeroToHeroResponse(h));
 	}
 
 	@Override
 	@Transactional
 	public Optional<HeroResponse> updateHero(Long id, HeroRequest heroRequest) {
 		
-		
-		Optional<Hero> hero = heroRepository.findById(id).map(oldHero -> {
-			oldHero.setHeroName(heroRequest.getHeroName());
-			oldHero.setPower(heroRequest.getPower());
-			oldHero.setRealName(heroRequest.getRealName());
-			return oldHero;
-		});
-		
-		return hero.map(h -> entityConversion.HeroToHeroResponse(h)); 
-		
-		
+		return heroRepository.findById(id)
+				.map(hero ->{ 
+					setUpdateValues(hero, heroRequest);
+					return hero;
+				})
+				.map(h -> entityConversion.HeroToHeroResponse(h));
+
 	}
 
 	@Override
 	public void deleteHeroById(Long id) {
 		heroRepository.deleteById(id);
 		
+	}
+	
+	private void setUpdateValues(Hero hero, HeroRequest heroRequest) {
+		hero.setHeroName(heroRequest.getHeroName());
+		hero.setPower(heroRequest.getPower());
+		hero.setRealName(heroRequest.getRealName());
 	}
 
 }

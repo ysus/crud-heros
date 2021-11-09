@@ -91,8 +91,14 @@ public class HeroController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteHero(@PathVariable("id") Long id){
-		heroService.deleteHeroById(id);
+		
+		HeroResponse existed = heroService.getHeroById(id)
+				.orElseThrow(() ->new HeroNotFoundException(String.format("Hero with id: '%s' not found", id)));
+		
+		heroService.deleteHeroById(existed.getId());
 		return ResponseEntity.noContent().build();
+		
+		
 	}
 	
 	
