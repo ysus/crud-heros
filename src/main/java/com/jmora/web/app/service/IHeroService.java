@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
 import com.jmora.web.app.data.payloads.response.HeroResponse;
 

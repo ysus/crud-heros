@@ -24,6 +24,10 @@ public class SpringSecurityAuditorAware {
       .map(SecurityContext::getAuthentication)
       .filter(Authentication::isAuthenticated)
       .map(Authentication::getName)
+      .map(name ->{
+    	  System.out.println("####"+name);
+    	  return name;
+      })
       .flatMap(repo::findByUsername);
   }
 }

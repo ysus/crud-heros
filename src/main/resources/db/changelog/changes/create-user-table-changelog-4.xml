@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet author="admin" id="1">
+		<createTable tableName="users">
+			<column name="id" type="INT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="user_name" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="user_passwd" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+
+			<column name="user_email" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<createTable tableName="roles">
+			<column name="id" type="INT">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="user_id" type="INT">
+				<constraints nullable="false" />
+			</column>
+			<column name="user_role" type="VARCHAR(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<addAutoIncrement tableName="users" columnName="id" columnDataType="INT" startWith="1" incrementBy="1" />
+		<addAutoIncrement tableName="roles" columnName="id" columnDataType="INT" startWith="1" incrementBy="1" />
+		<createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />
+		
+		<rollback>
+			<dropTable tableName="users" />
+		</rollback>
+	</changeSet>
+</databaseChangeLog>
