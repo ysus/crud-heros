@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,6 +40,7 @@ public class ApplicationUser implements UserDetails {
     Long id;
 
     @NotEmpty
+    @Column(unique=true)
     private String username;
 
     @NotEmpty
