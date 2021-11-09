@@ -9,12 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.jmora.web.app.data.repository.UserRepository;
 import com.jmora.web.app.filter.SecurityFilter;
 
 @EnableWebSecurity
@@ -48,13 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authProvider);
 	}
 	
+    
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http
 			.csrf().disable()    //Disabling CSRF as not using form based login
 			.authorizeRequests()
-			.antMatchers("/user/saveUser","/user/loginUser","/api/heros","/h2-console/**").permitAll()
+			.antMatchers(AUTH_WHITELIST).permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.exceptionHandling()
@@ -68,5 +65,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.headers().frameOptions().sameOrigin();
 			;
 	}
+	
+    private static final String[] AUTH_WHITELIST = {
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/swagger-ui/",
+            "/swagger-ui/**",
+            
+            "/user/saveUser","/user/loginUser","/h2-console/**"
+    };
 
 }
