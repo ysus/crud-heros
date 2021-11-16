@@ -23,7 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private SecurityFilter secFilter;
 	
-	
 	@Autowired
     private CustomAuthenticationProvider authProvider;
 	
@@ -38,10 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.authenticationProvider(authProvider);
 	}
 	
-    
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
 		http
 			.csrf().disable()    //Disabling CSRF as not using form based login
 			.authorizeRequests()

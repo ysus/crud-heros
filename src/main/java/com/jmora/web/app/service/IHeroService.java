@@ -20,5 +20,4 @@ public interface IHeroService {
 	Optional<HeroResponse> updateHero(Long id, HeroRequest heroRequest);
 
 	void deleteHeroById(Long id);
-
 }

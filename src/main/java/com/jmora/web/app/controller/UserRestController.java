@@ -23,14 +23,15 @@ public class UserRestController {
 
 	@Autowired
 	private IUserService userService;
+
 	@Autowired
 	private JWTUtil util;
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@PostMapping("/saveUser")
 	public ResponseEntity<String> saveUser(@RequestBody ApplicationUser user) {
-		
 		return userService.findByUsername(user.getUsername())
 				.map((u) ->{
 					return ResponseEntity.badRequest().body(String.format("username: '%s' already exist", u.getUsername()));
@@ -40,7 +41,6 @@ public class UserRestController {
 					String message = "User with id '" + id + "' saved succssfully!";
 					return ResponseEntity.ok(message);
 				});
-
 	}
 
 	@PostMapping("/loginUser")

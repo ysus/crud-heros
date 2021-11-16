@@ -40,7 +40,7 @@ import com.jmora.web.app.service.IHeroService;
 
 
 /**
- * @author Administrador
+ * @author jmp
  *
  */
 @SpringBootTest
@@ -70,16 +70,13 @@ public class HeroControllerTest {
 				.createNewHero(argumentCaptor.capture()))
 				.thenReturn(createHero(1L,"Hulk", "super fuerza", "Robert Bruce Banner"));
 		
-		
 		// Execute the POST request
 		this.mockMvc.perform(post("/api/heros")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(asJsonString(request))
 				.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-				 .with(csrf())
-				)
+				 .with(csrf()))
 				
-		
 		 		// Validate the response code
 				.andExpect(status().isCreated())
 				
@@ -116,9 +113,7 @@ public class HeroControllerTest {
 			.andExpect(jsonPath("$", hasSize(2)))
 			.andExpect(jsonPath("$[0].id",is(1)))
 			.andExpect(jsonPath("$[0].heroName",is("iron man")));
-			
 	}
-	
 	
 	@Test
 	@DisplayName("GET /api/heros/1")
@@ -142,7 +137,6 @@ public class HeroControllerTest {
 			.andExpect(jsonPath("$.heroName",is("iron man")));
 		}
 	
-	
 	@Test
 	@DisplayName("GET /api/heros/100  - Not Found")
 	void testGetHeroByIdNotFound() throws Exception {
@@ -154,12 +148,10 @@ public class HeroControllerTest {
 		this.mockMvc
 			.perform(get("/api/heros/100")
 			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-			 .with(csrf())
-			)
+			 .with(csrf()))
 		
 		// Validate the response code
 			.andExpect(status().isNotFound());
-			
 	}
 	
 	@Test
@@ -181,8 +173,7 @@ public class HeroControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(asJsonString(request))
 			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-			.with(csrf())
-			)
+			.with(csrf()))
 	
 			// Validate the response code
 			.andExpect(status().isOk())
@@ -219,14 +210,15 @@ public class HeroControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(asJsonString(request))
 			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-			.with(csrf())
-			)
+			.with(csrf()))
 		
 			// Validate the response code
 			.andExpect(status().isCreated());
 	}
 	
+
 	/**
+	 * @param id
 	 * @param heroName
 	 * @param power
 	 * @param realName

@@ -21,5 +21,4 @@ public class EntityToResponseConversion {
 	 public Hero HeroRequestToHero(HeroRequest heroRequest) {
 		return modelMapper.map(heroRequest, Hero.class);
 	}
-
 }

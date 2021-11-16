@@ -23,6 +23,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private JWTUtil util;
+	
 	@Autowired
 	private UserDetailsService userDetailsService;
 	

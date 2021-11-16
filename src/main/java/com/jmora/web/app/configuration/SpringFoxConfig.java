@@ -42,7 +42,6 @@ public class SpringFoxConfig {
     }
 
     private ApiInfo apiInfo() {
-    
         return new ApiInfoBuilder()
                 .title("Hero Api")
                 .description("Crud Rest Api")

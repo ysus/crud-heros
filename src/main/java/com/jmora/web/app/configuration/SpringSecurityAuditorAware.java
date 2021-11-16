@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.jmora.web.app.data.models.Username;
 
-
 @Configuration
 @EnableJpaAuditing
 public class SpringSecurityAuditorAware {

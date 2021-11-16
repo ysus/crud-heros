@@ -47,10 +47,5 @@ public class HeroControllerIT {
 				.getForEntity(baseUrl+"/api/heros/"+ heroId, JsonNode.class);
 		
 		assertThat(secondResult.getStatusCode(),is(HttpStatus.NOT_FOUND));
-		
-		
-		
-		
 	}
-
 }

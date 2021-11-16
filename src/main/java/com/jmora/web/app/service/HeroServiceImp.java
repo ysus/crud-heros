@@ -38,8 +38,8 @@ public class HeroServiceImp implements IHeroService {
 
 	@Override
 	public List<HeroResponse> getAllHeros() {
-		
 		List<HeroResponse> list = new ArrayList<>();
+		
 		Iterable<Hero> items = heroRepository.findAll();
 		items.forEach(hero->{
 			list.add( entityConversion.HeroToHeroResponse(hero));
@@ -56,21 +56,18 @@ public class HeroServiceImp implements IHeroService {
 
 	@Override
 	@Transactional
-	public Optional<HeroResponse> updateHero(Long id, HeroRequest heroRequest) {
-		
+	public Optional<HeroResponse> updateHero(Long id, HeroRequest heroRequest) {	
 		return heroRepository.findById(id)
 				.map(hero ->{ 
 					setUpdateValues(hero, heroRequest);
 					return hero;
 				})
 				.map(h -> entityConversion.HeroToHeroResponse(h));
-
 	}
 
 	@Override
 	public void deleteHeroById(Long id) {
 		heroRepository.deleteById(id);
-		
 	}
 	
 	private void setUpdateValues(Hero hero, HeroRequest heroRequest) {
@@ -78,5 +75,4 @@ public class HeroServiceImp implements IHeroService {
 		hero.setPower(heroRequest.getPower());
 		hero.setRealName(heroRequest.getRealName());
 	}
-
 }

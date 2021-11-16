@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class Hero extends AbstractAuditableEntity<Long> implements Serializable {
-
 	private static final long serialVersionUID = 3504071429122820038L;
 
 	@Column(name="hero_name")
@@ -30,6 +29,4 @@ public class Hero extends AbstractAuditableEntity<Long> implements Serializable 
 	
 	@Column(name="real_name")
 	private String realName;
-	
-	
 }
