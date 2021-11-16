@@ -1,4 +1,4 @@
-package com.jmora.web.app.convesion;
+package com.jmora.web.app.conversion;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jmora.web.app.convesion.EntityToResponseConversion;
+import com.jmora.web.app.conversion.EntityToResponseConversion;
 import com.jmora.web.app.data.models.Hero;
 import com.jmora.web.app.data.payloads.request.HeroRequest;
 import com.jmora.web.app.data.payloads.response.HeroResponse;
