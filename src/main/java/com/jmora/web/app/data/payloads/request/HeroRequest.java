@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 import lombok.Data;
 
 /**
- * @author Administrador
+ * @author jmp
  *
  */
 @Data

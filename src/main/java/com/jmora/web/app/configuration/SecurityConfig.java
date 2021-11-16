@@ -33,12 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManager();
 	}
 	
-//	 @Bean
-//	    UserDetailsService customUserDetailsService(UserRepository users) {
-//	        return (username) -> users.findByUsername(username)
-//	                .orElseThrow(() -> new UsernameNotFoundException("Username: " + username + " not found"));
-//	    }
-	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authProvider);
