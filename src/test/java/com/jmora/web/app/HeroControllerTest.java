@@ -71,18 +71,19 @@ public class HeroControllerTest {
 				.thenReturn(createHero(1L,"Hulk", "super fuerza", "Robert Bruce Banner"));
 		
 		// Execute the POST request
-		this.mockMvc.perform(post("/api/heros")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(asJsonString(request))
-				.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-				 .with(csrf()))
+		this.mockMvc
+			.perform(post("/api/heros")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(asJsonString(request))
+			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
+			.with(csrf()))
 				
-		 		// Validate the response code
-				.andExpect(status().isCreated())
-				
-				// Validate headers
-				.andExpect(header().exists("Location"))
-				.andExpect(header().string("Location", "http://localhost/api/heros/1"));
+	 		// Validate the response code
+			.andExpect(status().isCreated())
+			
+			// Validate headers
+			.andExpect(header().exists("Location"))
+			.andExpect(header().string("Location", "http://localhost/api/heros/1"));
 		
 		 // Validate the returned fields
 		assertThat(argumentCaptor.getValue().getHeroName(),is("Hulk"));
@@ -148,9 +149,9 @@ public class HeroControllerTest {
 		this.mockMvc
 			.perform(get("/api/heros/100")
 			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-			 .with(csrf()))
+			.with(csrf()))
 		
-		// Validate the response code
+			// Validate the response code
 			.andExpect(status().isNotFound());
 	}
 	
@@ -216,13 +217,12 @@ public class HeroControllerTest {
 			.andExpect(status().isCreated());
 	}
 	
-
 	/**
 	 * @param id
 	 * @param heroName
 	 * @param power
 	 * @param realName
-	 * @return
+	 * @return a new hero response
 	 */
 	private HeroResponse createHero(Long id,String heroName,String power, String realName) {
 		HeroResponse hero = new HeroResponse();
@@ -236,7 +236,7 @@ public class HeroControllerTest {
 	
     /**
      * @param obj
-     * @return
+     * @return a json string
      */
     static String asJsonString(final Object obj) {
         try {
