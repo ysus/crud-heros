@@ -111,7 +111,7 @@ class HeroServiceTest {
 	 * @param heroName
 	 * @param power
 	 * @param realName
-	 * @return a new hero response
+	 * @return a new hero 
 	 */
 	private Hero createHero(Long id,String heroName,String power, String realName) {
 		Hero hero = new Hero();
