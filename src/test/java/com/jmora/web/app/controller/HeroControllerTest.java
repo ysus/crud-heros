@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jmora.web.app.controller;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -38,11 +35,6 @@ import com.jmora.web.app.data.payloads.response.HeroResponse;
 import com.jmora.web.app.exception.HeroNotFoundException;
 import com.jmora.web.app.service.IHeroService;
 
-
-/**
- * @author jmp
- *
- */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class HeroControllerTest {

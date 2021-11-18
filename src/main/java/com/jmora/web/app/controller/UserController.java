@@ -19,7 +19,7 @@ import com.jmora.web.app.util.JWTUtil;
 
 @Controller
 @RequestMapping("/user")
-public class UserRestController {
+public class UserController {
 
 	@Autowired
 	private IUserService userService;
@@ -58,4 +58,5 @@ public class UserRestController {
 	public ResponseEntity<String> testAfterLogin(Principal p) {
 		return ResponseEntity.ok("You are accessing data after a valid Login. You are :" + p.getName());
 	}
+	
 }
