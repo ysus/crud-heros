@@ -20,15 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jmora.web.app.data.models.ApplicationUser;
 import com.jmora.web.app.data.payloads.request.ApplicationUserRequest;
 import com.jmora.web.app.data.payloads.response.ApplicationUserResponse;
-import com.jmora.web.app.data.payloads.response.HeroResponse;
 
 
-/**
- * @author Administrador
- *
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class HeroControllerIT {
+public class UserControllerIT {
 
 	@LocalServerPort
 	int randomServerPort;
@@ -41,9 +36,8 @@ public class HeroControllerIT {
 	}
 	
 	@Test
-	@DisplayName("Integration Test HeroController")
+	@DisplayName("Integration Test userController")
 	void testDeleteHero() throws Exception {
-		long heroId = 1;
 				
 		// create user registration object
 		ApplicationUser registrationUser = getRegistrationUser();
@@ -76,8 +70,7 @@ public class HeroControllerIT {
 		// Authenticate User and get JWT
 		ResponseEntity<ApplicationUserResponse> authenticationResponse = this.testRestTemplate.exchange(createURLWithPort("/user/loginUser"),
 				HttpMethod.POST, authenticationEntity, ApplicationUserResponse.class);
-		
-		// Validate the response code
+			
 		assertThat(authenticationResponse.getStatusCode(),is(HttpStatus.OK));
 		
 		// if the authentication is successful		
@@ -86,24 +79,16 @@ public class HeroControllerIT {
 		headers.set("Authorization", token);
 		HttpEntity<String> jwtEntity = new HttpEntity<String>(headers);
 		
-		ResponseEntity<HeroResponse> firstResult = this.testRestTemplate.exchange(
-				createURLWithPort("/api/heros/"+ heroId), HttpMethod.GET, jwtEntity, HeroResponse.class);
+		// Use Token to get Response
+		ResponseEntity<String> testResponse = this.testRestTemplate.exchange(
+				createURLWithPort("/user/getData/"), HttpMethod.POST, jwtEntity, String.class);
 		
-		// Validate the response code
-		assertThat(firstResult.getStatusCode(),is(HttpStatus.OK));
-		
-		this.testRestTemplate.exchange(createURLWithPort("/api/heros/"+ heroId),HttpMethod.DELETE, jwtEntity, Void.class);
-		
-		ResponseEntity<HeroResponse> secondResult = this.testRestTemplate
-				.exchange(createURLWithPort("/api/heros/"+ heroId), HttpMethod.GET, jwtEntity, HeroResponse.class);
-		
-		// Validate the response code
-		assertThat(secondResult.getStatusCode(),is(HttpStatus.NOT_FOUND));
+		assertThat(testResponse.getStatusCode(),is(HttpStatus.OK));
 	}
 	
 	/**
-	 * @param uri url
-	 * @return new url
+	 * @param uri
+	 * @return new uri
 	 */
 	private String createURLWithPort(String uri) {
 		return  "http://localhost:" +  randomServerPort + uri;
@@ -114,23 +99,23 @@ public class HeroControllerIT {
 	 */
 	private ApplicationUser getRegistrationUser() {
 		ApplicationUser user = new ApplicationUser();
-		user.setUsername("jesus2");
+		user.setUsername("jesus");
 		user.setPassword("morales");
 		user.setEmail("moralespanfilo2@gmail.com");
 		//user.setRoles(List.of("ADMIN"));
 		return user;
 	}
-
+	
 	/**
 	 * @return AuthenticationUser
 	 */
 	private ApplicationUserRequest getAuthenticationUser() {
 		ApplicationUserRequest user = new ApplicationUserRequest();
-		user.setUsername("jesus2");
+		user.setUsername("jesus");
 		user.setPassword("morales");
 		return user;
 	}
-
+	
 	/**
 	 * @return headers
 	 */

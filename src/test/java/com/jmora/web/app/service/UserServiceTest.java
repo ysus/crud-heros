@@ -72,5 +72,4 @@ class UserServiceTest {
 		user.setEmail(email);
 		return user;	
 	}
-
 }
