@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.jmora.web.app;
+package com.jmora.web.app.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;

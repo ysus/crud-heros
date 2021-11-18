@@ -1,4 +1,4 @@
-package com.jmora.web.app;
+package com.jmora.web.app.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

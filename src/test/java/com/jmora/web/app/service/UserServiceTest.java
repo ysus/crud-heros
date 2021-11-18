@@ -1,4 +1,4 @@
-package com.jmora.web.app;
+package com.jmora.web.app.service;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -14,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.jmora.web.app.data.models.ApplicationUser;
 import com.jmora.web.app.data.repository.UserRepository;
-import com.jmora.web.app.service.UserServiceImpl;
 
 @SpringBootTest
 class UserServiceTest {
@@ -40,7 +39,6 @@ class UserServiceTest {
 		//Assert the response
 		Assertions.assertNotNull(returnedUserId,"The saved user should not be null");
 		Assertions.assertEquals(1,returnedUserId,  "The ID should be 1");
-		
 	}
 	
 	@Test
@@ -57,10 +55,7 @@ class UserServiceTest {
 		//Assert the response
 		Assertions.assertTrue(returnedUser.isPresent(), "User by username 'jesus' not found");
 		Assertions.assertSame(returnedUser.get().getId(), 1L, "The User returned was not the same as the mock");
-
 	}
-	
-	
 	
 	/**
 	 * @param id
@@ -75,11 +70,7 @@ class UserServiceTest {
 		user.setUsername(username);
 		user.setPassword(password);
 		user.setEmail(email);
-		
 		return user;	
 	}
-
-	
-	
 
 }
