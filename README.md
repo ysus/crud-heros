@@ -13,6 +13,8 @@ repositorio que contiene un proyecto srpring boot con java 11
 - Spring Data Auditing
 - ModelMapper
 - Docker
+- Integration test 
+- Spring boot cache
 
 ## Steps
 
