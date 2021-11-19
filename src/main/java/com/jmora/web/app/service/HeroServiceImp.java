@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,9 @@ public class HeroServiceImp implements IHeroService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Caching(evict = {
+            @CacheEvict(value="heros", allEntries=true),
+            @CacheEvict(value="hero", allEntries=true)})
 	@Override
 	public HeroResponse createNewHero(HeroRequest request) {
 		Hero hero = entityConversion.HeroRequestToHero(request);
@@ -36,6 +42,7 @@ public class HeroServiceImp implements IHeroService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Cacheable("heros")
 	@Override
 	public List<HeroResponse> getAllHeros() {
 		List<HeroResponse> list = new ArrayList<>();
@@ -51,6 +58,7 @@ public class HeroServiceImp implements IHeroService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Cacheable("hero")
 	@Override
 	public Optional<HeroResponse> getHeroById(Long id) {
 		return heroRepository.findById(id)
@@ -60,6 +68,9 @@ public class HeroServiceImp implements IHeroService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Caching(evict = {
+            @CacheEvict(value="heros", allEntries=true),
+            @CacheEvict(value="hero", allEntries=true)})
 	@Override
 	@Transactional
 	public Optional<HeroResponse> updateHero(Long id, HeroRequest heroRequest) {	
@@ -74,6 +85,10 @@ public class HeroServiceImp implements IHeroService {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Caching(evict = {
+			@CacheEvict(value = "heros", allEntries = true),
+            @CacheEvict(value = "hero", key = "#id")})
+	//@CacheEvict(value = "hero", key = "#id")
 	@Override
 	public void deleteHeroById(Long id) {
 		heroRepository.deleteById(id);
