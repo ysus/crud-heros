@@ -19,18 +19,19 @@ import com.jmora.web.app.util.JWTUtil;
 
 @Controller
 @RequestMapping("/user")
-public class UserRestController {
+public class UserController {
 
 	@Autowired
 	private IUserService userService;
+
 	@Autowired
 	private JWTUtil util;
+	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@PostMapping("/saveUser")
 	public ResponseEntity<String> saveUser(@RequestBody ApplicationUser user) {
-		
 		return userService.findByUsername(user.getUsername())
 				.map((u) ->{
 					return ResponseEntity.badRequest().body(String.format("username: '%s' already exist", u.getUsername()));
@@ -40,7 +41,6 @@ public class UserRestController {
 					String message = "User with id '" + id + "' saved succssfully!";
 					return ResponseEntity.ok(message);
 				});
-
 	}
 
 	@PostMapping("/loginUser")
@@ -58,4 +58,5 @@ public class UserRestController {
 	public ResponseEntity<String> testAfterLogin(Principal p) {
 		return ResponseEntity.ok("You are accessing data after a valid Login. You are :" + p.getName());
 	}
+	
 }

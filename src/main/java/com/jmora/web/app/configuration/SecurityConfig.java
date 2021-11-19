@@ -23,7 +23,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private SecurityFilter secFilter;
 	
-	
 	@Autowired
     private CustomAuthenticationProvider authProvider;
 	
@@ -33,21 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManager();
 	}
 	
-//	 @Bean
-//	    UserDetailsService customUserDetailsService(UserRepository users) {
-//	        return (username) -> users.findByUsername(username)
-//	                .orElseThrow(() -> new UsernameNotFoundException("Username: " + username + " not found"));
-//	    }
-	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authProvider);
 	}
 	
-    
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
 		http
 			.csrf().disable()    //Disabling CSRF as not using form based login
 			.authorizeRequests()

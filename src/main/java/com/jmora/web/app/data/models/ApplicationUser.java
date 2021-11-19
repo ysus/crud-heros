@@ -32,7 +32,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ApplicationUser implements UserDetails {
-
 	private static final long serialVersionUID = 9001678163227386965L;
 
 	@Id

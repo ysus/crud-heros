@@ -23,7 +23,6 @@ import lombok.Setter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractAuditableEntity<ID> extends AbstractPersistableEntity<ID> implements Serializable {
-    
 	private static final long serialVersionUID = 44703451230117323L;
 
 	@CreatedDate

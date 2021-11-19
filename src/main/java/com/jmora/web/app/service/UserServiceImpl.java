@@ -21,23 +21,29 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptEncoder;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Long saveUser(ApplicationUser user) {
 		user.setPassword(bCryptEncoder.encode(user.getPassword()));
 		return userRepo.save(user).getId();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Optional<ApplicationUser> findByUsername(String username) {
 		return userRepo.findByUsername(username);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
 		return userRepo.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User with username: " + username + " not found"));
-
 	}
-
 }

@@ -3,6 +3,8 @@
  */
 package com.jmora.web.app.data.payloads.request;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -10,11 +12,15 @@ import javax.validation.constraints.Pattern;
 import lombok.Data;
 
 /**
- * @author Administrador
+ * @author jmp
  *
  */
 @Data
-public class HeroRequest {
+public class HeroRequest implements Serializable {
+
+	private static final long serialVersionUID = -8915842595972379324L;
+
+	private Long id;
 
 	@NotBlank(message = "heroName mustn't be empty")
 	@NotNull(message = "heroName is required")

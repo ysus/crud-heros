@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jmora.web.app.controller;
 
 import java.net.URI;
@@ -41,7 +38,6 @@ public class HeroController {
 	@PostMapping
 	@LogExecutionTime
 	public ResponseEntity<Void> createNewHero(@Valid @RequestBody HeroRequest heroRequest ){
-		
 		HeroResponse created = heroService.createNewHero(heroRequest);
 		
 		URI location= ServletUriComponentsBuilder.fromCurrentRequest()
@@ -61,7 +57,6 @@ public class HeroController {
 	@GetMapping("/{id}")
 	@LogExecutionTime
 	public ResponseEntity<HeroResponse> getHeroById(@PathVariable("id") Long id){
-		
 		return ResponseEntity
 				.ok(heroService.getHeroById(id).orElseThrow(() -> 
 					new HeroNotFoundException(String.format("Hero with id: '%s' not found", id))));	
@@ -85,21 +80,15 @@ public class HeroController {
 							.toUri();
 					
 					return ResponseEntity.created(location).body(created);
-					
 				});
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteHero(@PathVariable("id") Long id){
-		
 		HeroResponse existed = heroService.getHeroById(id)
 				.orElseThrow(() ->new HeroNotFoundException(String.format("Hero with id: '%s' not found", id)));
 		
 		heroService.deleteHeroById(existed.getId());
 		return ResponseEntity.noContent().build();
-		
-		
 	}
-	
-	
 }

@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.jmora.web.app;
+package com.jmora.web.app.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,11 +35,6 @@ import com.jmora.web.app.data.payloads.response.HeroResponse;
 import com.jmora.web.app.exception.HeroNotFoundException;
 import com.jmora.web.app.service.IHeroService;
 
-
-/**
- * @author Administrador
- *
- */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class HeroControllerTest {
@@ -68,24 +60,22 @@ public class HeroControllerTest {
 		// Setup our mocked service
 		when(heroService
 				.createNewHero(argumentCaptor.capture()))
-				.thenReturn(createHero(1L,"Hulk", "super fuerza", "Robert Bruce Banner"));
-		
+				.thenReturn(createHeroResponse(1L,"Hulk", "super fuerza", "Robert Bruce Banner"));
 		
 		// Execute the POST request
-		this.mockMvc.perform(post("/api/heros")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(asJsonString(request))
-				.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-				 .with(csrf())
-				)
+		this.mockMvc
+			.perform(post("/api/heros")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(asJsonString(request))
+			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
+			.with(csrf()))
 				
-		
-		 		// Validate the response code
-				.andExpect(status().isCreated())
-				
-				// Validate headers
-				.andExpect(header().exists("Location"))
-				.andExpect(header().string("Location", "http://localhost/api/heros/1"));
+	 		// Validate the response code
+			.andExpect(status().isCreated())
+			
+			// Validate headers
+			.andExpect(header().exists("Location"))
+			.andExpect(header().string("Location", "http://localhost/api/heros/1"));
 		
 		 // Validate the returned fields
 		assertThat(argumentCaptor.getValue().getHeroName(),is("Hulk"));
@@ -100,7 +90,7 @@ public class HeroControllerTest {
 		
 		// Setup our mocked service
 		when(heroService.getAllHeros()).thenReturn(
-				List.of(createHero(1L,"iron man", "armadura", "tony stark"),createHero(2L,"capitan america", "super poder", "steve")));
+				List.of(createHeroResponse(1L,"iron man", "armadura", "tony stark"),createHeroResponse(2L,"capitan america", "super poder", "steve")));
 		
 		// Execute the GET request
 		this.mockMvc
@@ -116,16 +106,14 @@ public class HeroControllerTest {
 			.andExpect(jsonPath("$", hasSize(2)))
 			.andExpect(jsonPath("$[0].id",is(1)))
 			.andExpect(jsonPath("$[0].heroName",is("iron man")));
-			
 	}
-	
 	
 	@Test
 	@DisplayName("GET /api/heros/1")
 	void testGetHeroById() throws Exception {
 		
 		// Setup our mocked service
-		when(heroService.getHeroById(1L)).thenReturn(Optional.of(createHero(1L,"iron man", "armadura", "tony stark")));
+		when(heroService.getHeroById(1L)).thenReturn(Optional.of(createHeroResponse(1L,"iron man", "armadura", "tony stark")));
 		
 		// Execute the GET request
 		this.mockMvc
@@ -142,7 +130,6 @@ public class HeroControllerTest {
 			.andExpect(jsonPath("$.heroName",is("iron man")));
 		}
 	
-	
 	@Test
 	@DisplayName("GET /api/heros/100  - Not Found")
 	void testGetHeroByIdNotFound() throws Exception {
@@ -154,12 +141,10 @@ public class HeroControllerTest {
 		this.mockMvc
 			.perform(get("/api/heros/100")
 			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-			 .with(csrf())
-			)
+			.with(csrf()))
 		
-		// Validate the response code
+			// Validate the response code
 			.andExpect(status().isNotFound());
-			
 	}
 	
 	@Test
@@ -173,7 +158,7 @@ public class HeroControllerTest {
 		
 		when(heroService
 				.updateHero(eq(1L),argumentCaptor.capture()))
-				.thenReturn(Optional.of(createHero(1L,"Hulk", "super fuerza", "Robert Bruce Banner")));
+				.thenReturn(Optional.of(createHeroResponse(1L,"Hulk", "super fuerza", "Robert Bruce Banner")));
 		
 		// Execute the GET request
 		this.mockMvc
@@ -181,8 +166,7 @@ public class HeroControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(asJsonString(request))
 			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-			.with(csrf())
-			)
+			.with(csrf()))
 	
 			// Validate the response code
 			.andExpect(status().isOk())
@@ -219,20 +203,20 @@ public class HeroControllerTest {
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(asJsonString(request))
 			.with(SecurityMockMvcRequestPostProcessors.user("jesus").roles("ADMIN"))
-			.with(csrf())
-			)
+			.with(csrf()))
 		
 			// Validate the response code
 			.andExpect(status().isCreated());
 	}
 	
 	/**
+	 * @param id
 	 * @param heroName
 	 * @param power
 	 * @param realName
-	 * @return
+	 * @return a new hero response
 	 */
-	private HeroResponse createHero(Long id,String heroName,String power, String realName) {
+	private HeroResponse createHeroResponse(Long id,String heroName,String power, String realName) {
 		HeroResponse hero = new HeroResponse();
 		hero.setId(id);
 		hero.setHeroName(heroName);
@@ -244,7 +228,7 @@ public class HeroControllerTest {
 	
     /**
      * @param obj
-     * @return
+     * @return a json string
      */
     static String asJsonString(final Object obj) {
         try {

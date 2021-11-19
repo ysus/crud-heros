@@ -42,24 +42,27 @@ public class LoggingAspect {
 		stopWatch.start(methodName);
 		Object result = proceedingJoinPoint.proceed();
 		stopWatch.stop();
+		
 		// Log method execution time
 		if (logger.isInfoEnabled()) {
+			StringBuilder sb = new StringBuilder();
 			
-			logger.info(className + " -> " + methodName+" took total: " + stopWatch.getTotalTimeSeconds() + " seconds");
-			 
+			sb.append(" took total: " ).append(stopWatch.getTotalTimeSeconds()).append(" seconds");
+			
 			// prettyPrint() return a string with a table describing all tasks performed. For custom reporting, call getTaskInfo() and use the
 			// task info directly.
-			logger.info("\n1. prettyPrint Result: " + stopWatch.prettyPrint());
-	 
+			sb.append("\n1. prettyPrint Result: ").append( stopWatch.prettyPrint());
+			
 			// Return a short description of the total running time.
-			logger.info("2. Short Summary: " + stopWatch.shortSummary());
-	 
+			sb.append("\n2. Short Summary: ").append( stopWatch.shortSummary());
+			
 			// Return the number of tasks timed.
-			logger.info("3. Total Task Count: " + stopWatch.getTaskCount());
-	 
+			sb.append("\n3. Total Task Count: ").append(stopWatch.getTaskCount());
+			
 			// Return the name of this task.
-			logger.info("4. Last Task Name: " + stopWatch.getLastTaskInfo().getTaskName());
-		
+			sb.append("\n4. Last Task Name: ").append(stopWatch.getLastTaskInfo().getTaskName());
+			
+			logger.info("{}",sb);
 		}
 		return result;
 	}
